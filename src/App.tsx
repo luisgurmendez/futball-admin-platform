@@ -1,25 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { Input, InputOnChangeData, Button } from 'semantic-ui-react';
+
+const AppContainer = styled.div`
+`
 
 const App: React.FC = () => {
+
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleUsernameChange = (_: any, data: InputOnChangeData) => {
+    setUsername(data.value)
+  }
+
+  const handlePasswordChange = (_: any, data: InputOnChangeData) => {
+    setPassword(data.value)
+  }
+
+
+  const handleLogin = () => {
+
+    fetch('http://localhost:3001/login', { body: JSON.stringify({ username: username, password: password }), method: "POST", headers: { "content-type": "application/json; charset=UTF-8" } })
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AppContainer>
+      <Input value={username} placeholder="Username" onChange={handleUsernameChange} />
+      <Input value={password} placeholder="Password" onChange={handlePasswordChange} />
+      <Button onClick={handleLogin}>Login</Button>
+    </AppContainer>
   );
 }
 
